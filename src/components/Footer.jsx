@@ -1,13 +1,25 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useToast } from './ToastProvider'
 import AnimatedFooterLogo from './AnimatedFooterLogo'
 
 export default function Footer() {
   const [year, setYear] = useState(new Date().getFullYear())
+  const navigate = useNavigate()
+  const toast = useToast()
 
   const scrollToTop = (e) => {
     e.preventDefault()
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleDashboardNav = (e) => {
+    const token = localStorage.getItem('cs_token')
+    if (!token) {
+      e.preventDefault()
+      toast.show('Please login to access the dashboard.', 'info', 2000)
+      navigate('/login')
+    }
   }
 
   return (
@@ -48,8 +60,8 @@ export default function Footer() {
             <ul className="footer-links">
               <li><Link to="/features">Features</Link></li>
               <li><Link to="/developers">For Developers</Link></li>
-              <li><Link to="/dashboard">Dashboard</Link></li>
-              <li><a href="#pricing">Pricing</a></li>
+              <li><Link to="/dashboard" onClick={handleDashboardNav}>Dashboard</Link></li>
+              <li><Link to="/info/pricing">Pricing</Link></li>
             </ul>
           </div>
 
@@ -58,8 +70,8 @@ export default function Footer() {
             <h3 className="footer-heading">Company</h3>
             <ul className="footer-links">
               <li><Link to="/about">About Us</Link></li>
-              <li><a href="#careers">Careers</a></li>
-              <li><a href="#blog">Blog</a></li>
+              <li><Link to="/info/careers">Careers</Link></li>
+              <li><Link to="/info/blog">Blog</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
@@ -68,10 +80,10 @@ export default function Footer() {
           <div className="footer-section">
             <h3 className="footer-heading">Resources</h3>
             <ul className="footer-links">
-              <li><a href="#docs">Documentation</a></li>
-              <li><a href="#api">API Reference</a></li>
-              <li><a href="#support">Support</a></li>
-              <li><a href="#status">System Status</a></li>
+              <li><Link to="/info/docs">Documentation</Link></li>
+              <li><Link to="/info/api">API Reference</Link></li>
+              <li><Link to="/info/support">Support</Link></li>
+              <li><Link to="/info/status">System Status</Link></li>
             </ul>
           </div>
         </div>
@@ -81,11 +93,11 @@ export default function Footer() {
           <div className="footer-bottom-left">
             <span className="copyright">© {year} CompliSource. All rights reserved.</span>
             <div className="footer-legal">
-              <a href="#privacy">Privacy Policy</a>
+              <Link to="/info/privacy">Privacy Policy</Link>
               <span className="separator">•</span>
-              <a href="#terms">Terms of Service</a>
+              <Link to="/info/terms">Terms of Service</Link>
               <span className="separator">•</span>
-              <a href="#cookies">Cookie Policy</a>
+              <Link to="/info/cookies">Cookie Policy</Link>
             </div>
           </div>
           <button className="back-to-top" onClick={scrollToTop} aria-label="Back to top">

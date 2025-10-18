@@ -13,6 +13,7 @@ import PrototypeExplanation from './pages/PrototypeExplanation'
 import HelpPage from './pages/HelpPage'
 import UserGuidePage from './pages/UserGuidePage'
 import { ToastProvider } from './components/ToastProvider'
+import InfoPage from './pages/InfoPage'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/prototype" element={<PrototypeExplanation />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/guide" element={<UserGuidePage />} />
+          <Route path="/info/:slug" element={<InfoPage />} />
         </Routes>
       </Router>
     </ToastProvider>

@@ -7,6 +7,7 @@ export default function Header({ activePage = '' }) {
   const [profileOpen, setProfileOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userEmail, setUserEmail] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -16,6 +17,26 @@ export default function Header({ activePage = '' }) {
     if (token) {
       setIsLoggedIn(true)
       
+      // Fetch profile info to show username/name in header
+      fetch(`${API_BASE}/profile`, { 
+        headers: { 'Authorization': `Bearer ${token}` } 
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Auth expired')
+          return res.json()
+        })
+        .then(data => {
+          const email = data.email || ''
+          setUserEmail(email)
+          const uname = data.username || ''
+          const name = data.name || ''
+          const local = email.includes('@') ? email.split('@')[0] : email
+          setDisplayName(uname || name || local || 'Profile')
+        })
+        .catch(() => {
+          setIsLoggedIn(false)
+          localStorage.removeItem('cs_token')
+        })
       // Fetch user info
       fetch(`${API_BASE}/me`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -25,7 +46,6 @@ export default function Header({ activePage = '' }) {
           return res.json()
         })
         .then(data => {
-          setUserEmail(data.email)
           // Proactively refresh token to extend session
           try {
             fetch(`${API_BASE}/auth/refresh`, { 
@@ -131,7 +151,7 @@ export default function Header({ activePage = '' }) {
                 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
                 <span>👤</span>
-                <span>{userEmail.split('@')[0] || 'Profile'}</span>
+                <span>{displayName}</span>
               </button>
               {profileOpen && (
                 <div 
@@ -150,7 +170,7 @@ export default function Header({ activePage = '' }) {
                   }}
                 >
                   <div style={{ padding: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-                    <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Profile</div>
+                    <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>{displayName || 'Profile'}</div>
                     <div style={{ fontSize: '0.875rem', color: '#666' }}>{userEmail}</div>
                   </div>
                   <div style={{ padding: '0.5rem' }}>
