@@ -1,4 +1,50 @@
 /* CompliSource Theme */
+/* Minimal responsiveness without altering base design */
+@media (max-width: 992px) {
+  .dashboard-header { gap: 1.25rem; }
+
+/* Anti-overflow safeguards (preserve design, prevent text spilling) */
+.card,
+.ai-response,
+.config-card,
+.ocr-scanner-card,
+.timeline li,
+.dashboard-demo,
+.feature-detail,
+.footer-brand-section {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.items-table th,
+.items-table td {
+  word-break: break-word;
+}
+
+.code,
+pre,
+pre code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+  .ocr-result-zone { display: block; }
+  .data-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 768px) {
+  .cards.two { grid-template-columns: 1fr; }
+  .config-grid { grid-template-columns: 1fr; }
+  .ai-input-form { flex-direction: column; }
+  .ai-input-form .btn { width: 100%; }
+  .upload-buttons .btn { width: 100%; }
+  .action-buttons .btn { width: 100%; }
+  .items-table { display: block; overflow-x: auto; }
+}
+
+@media (max-width: 480px) {
+  .page-title { font-size: clamp(22px, 7vw, 28px); }
+}
+
 :root{
   --bg:#FFFFFF;
   --bg-alt:#F6F9FC;
@@ -360,6 +406,8 @@ img{max-width:100%;display:block}
   align-items: center;
   gap: 12px;
   margin-bottom: 1rem;
+  flex-wrap: wrap; /* allow brand text to wrap under icon on small screens */
+  overflow: visible; /* avoid clipping first character */
 }
 
 .footer-brand canvas {
@@ -383,6 +431,18 @@ img{max-width:100%;display:block}
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Footer responsiveness for tablets/phones (keep style, improve fit) */
+@media (max-width: 960px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer-brand .brand-text { font-size: 1.35rem; }
+}
+
+@media (max-width: 640px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand-section { max-width: 100%; }
+  .footer-brand .brand-text { font-size: 1.2rem; }
 }
 
 .footer-tagline {
@@ -613,6 +673,8 @@ img{max-width:100%;display:block}
 .dashboard-demo canvas {
   display: block;
   border-radius: 8px;
+  max-width: 100%;
+  height: auto;
 }
 
 
@@ -1782,3 +1844,46 @@ img{max-width:100%;display:block}
   font-size: 16px;
 }
 
+/* WhatsApp Bot Demo responsiveness */
+.whatsapp-bot-demo { max-width: 100%; }
+.whatsapp-header { flex-wrap: wrap; row-gap: 8px; }
+.messages-container { max-width: 100%; }
+
+@media (max-width: 768px) {
+  .chat-background { height: 300px; }
+  .quick-actions { gap: 6px; padding: 8px; }
+  .quick-btn { padding: 8px 12px; font-size: 12px; }
+  .chat-input-container { padding: 8px; }
+  .chat-input { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  .chat-background { height: 240px; }
+  .message-bubble { max-width: 85%; }
+}
+
+/* Upload CSV input: prevent label text from overflowing */
+#uploadCsv,
+input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="file"] {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  max-width: 45%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Ensure hero CTAs centered on tablets/phones */
+@media (max-width: 768px) {
+  .hero-ctas { justify-content: center; }
+}

@@ -53,6 +53,24 @@ export default function DashboardPage() {
       })
   }, [navigate])
 
+  // Load persisted analysis report (if any) so it survives refresh/navigation
+  useEffect(() => {
+    try {
+      const savedHtml = localStorage.getItem('cs_report_html')
+      const savedViolations = localStorage.getItem('cs_report_violations')
+      const savedAnalysis = localStorage.getItem('cs_report_analysisData')
+      const savedRc = localStorage.getItem('cs_report_recordCount')
+      const savedStats = localStorage.getItem('cs_report_moduleStats')
+      if (savedHtml) setResult(savedHtml)
+      if (savedViolations) setViolations(JSON.parse(savedViolations))
+      if (savedAnalysis) setAnalysisData(JSON.parse(savedAnalysis))
+      if (savedRc) setRecordCount(parseInt(savedRc, 10) || 0)
+      if (savedStats) setModuleStats(JSON.parse(savedStats))
+    } catch (e) {
+      console.warn('Failed to restore saved report', e)
+    }
+  }, [])
+
   const handleGenerateVerifiedReport = async () => {
     if (!analysisData) return
     try {
@@ -80,6 +98,7 @@ export default function DashboardPage() {
       const explorerUrl = txHash ? getExplorerLink(selectedBlockchain, txHash) : ''
       const qr = explorerUrl ? `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(explorerUrl)}` : ''
       const imgs = buildChartsImages(recordCount, moduleStats || {}, analysisData.score)
+      const generatedAt = new Date().toLocaleString()
       const html = `
         <h2>Blockchain-Verified Compliance Report</h2>
         <div class="card">
@@ -88,6 +107,7 @@ export default function DashboardPage() {
           <div><strong>Blockchain:</strong> ${chain.name}</div>
           <div><strong>Overall Score:</strong> ${analysisData.score}%</div>
           <div><strong>Records:</strong> ${recordCount}</div>
+          <div><strong>Generated At:</strong> ${generatedAt}</div>
         </div>
         <div class="card"><h3>Charts</h3>
           <div><strong>Compliance Breakdown</strong><br/><img src="${imgs.pie}"/></div>
@@ -127,6 +147,13 @@ export default function DashboardPage() {
     // Reset file input
     const fileInput = document.getElementById('uploadCsv')
     if (fileInput) fileInput.value = ''
+    // Clear persisted report
+    localStorage.removeItem('cs_report_html')
+    localStorage.removeItem('cs_report_violations')
+    localStorage.removeItem('cs_report_analysisData')
+    localStorage.removeItem('cs_report_recordCount')
+    localStorage.removeItem('cs_report_moduleStats')
+    localStorage.removeItem('cs_report_generatedAt')
   }
 
   const buildChartsImages = (rc, ms, score) => {
@@ -253,6 +280,7 @@ export default function DashboardPage() {
     const ms = moduleStats || {}
     const imgs = buildChartsImages(rc, ms, analysisData.score)
     const chain = blockchains[selectedBlockchain]
+    const generatedAt = new Date().toLocaleString()
     const html = `
       <h2>Compliance Analysis Report</h2>
       <div class="card">
@@ -261,6 +289,7 @@ export default function DashboardPage() {
         <div><strong>Blockchain:</strong> ${chain.name}</div>
         <div><strong>Overall Score:</strong> ${analysisData.score}%</div>
         <div><strong>Records:</strong> ${rc}</div>
+        <div><strong>Generated At:</strong> ${generatedAt}</div>
       </div>
       <div class="card"><h3>Charts</h3>
         <div><strong>Compliance Breakdown</strong><br/><img src="${imgs.pie}"/></div>
@@ -340,7 +369,8 @@ export default function DashboardPage() {
       }
       setBlockchainTx(txResult)
       
-      setResult(`
+      const generatedAt = new Date().toLocaleString()
+      const htmlStr = `
         <div class="card" style="padding:16px">
           <h3>✅ Compliance Analysis Report</h3>
           
@@ -350,6 +380,7 @@ export default function DashboardPage() {
             <div><strong>Overall Compliance Score:</strong> <span style="color: #00c49a; font-size: 1.5em; font-weight: bold;">${data.score}%</span></div>
             <div><strong>Records Processed:</strong> ${rc}</div>
             <div><strong>Total Violations:</strong> ${data.violations.length}</div>
+            <div><strong>Generated At:</strong> ${generatedAt}</div>
           </div>
 
           <h4 style="margin-top: 8px;">Module-wise Compliance</h4>
@@ -410,7 +441,19 @@ export default function DashboardPage() {
             <pre class="code" style="white-space:pre-wrap; margin-top: 8px;">${JSON.stringify(data.violations, null, 2)}</pre>
           </details>
         </div>
-      `)
+      `
+      setResult(htmlStr)
+      // Persist the report so it survives refresh/navigation
+      try {
+        localStorage.setItem('cs_report_html', htmlStr)
+        localStorage.setItem('cs_report_violations', JSON.stringify(data.violations || []))
+        localStorage.setItem('cs_report_analysisData', JSON.stringify({ score: data.score, proof_hash: data.proof_hash }))
+        localStorage.setItem('cs_report_recordCount', String(rc))
+        localStorage.setItem('cs_report_moduleStats', JSON.stringify(ms))
+        localStorage.setItem('cs_report_generatedAt', generatedAt)
+      } catch (e) {
+        console.warn('Failed to persist report', e)
+      }
       
     } catch (err) {
       console.error('Run engine failed', err)
@@ -528,14 +571,15 @@ export default function DashboardPage() {
             
             {/* Analysis Control Buttons */}
             <div style={{ marginTop: '24px', textAlign: 'center' }}>
-              <button 
-                className="btn btn-outline" 
-                onClick={handleClearAnalysis} 
-                style={{ marginRight: '12px' }}
-                disabled={!result && violations.length === 0}
-              >
-                🗑️ Clear Analysis
-              </button>
+              {(result || violations.length > 0) && (
+                <button 
+                  className="btn btn-outline" 
+                  onClick={handleClearAnalysis} 
+                  style={{ marginRight: '12px' }}
+                >
+                  🗑️ Clear Analysis
+                </button>
+              )}
               {violations.length > 0 && (
                 <button 
                   className="btn btn-accent" 
