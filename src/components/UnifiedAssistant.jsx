@@ -86,7 +86,7 @@ export default function UnifiedAssistant({ violations = [], score = null }) {
     }
     if (t.includes('gst') || t.includes('tax')) {
       const gstIssues = violations.filter(v => (v.type||'').toLowerCase().includes('gst'))
-      return `GST overview: common issues include incorrect rates and invalid GSTIN formats. I see ${gstIssues.length} GST-related issues in your data. Validate HSN/SAC codes and update invoices.`
+      return `GST overview: common issues include incorrect rates, invalid GSTIN formats, and wrong HSN/SAC. I see ${gstIssues.length} GST-related issues in your data. Validate HSN/SAC and update invoices.`
     }
     if (t.includes('cash')) {
       return 'Cash transaction limit reference: in India, transactions above ₹2,00,000 in cash are restricted. Prefer banking channels for large amounts.'
@@ -125,11 +125,9 @@ export default function UnifiedAssistant({ violations = [], score = null }) {
     if (!text.trim()) return
 
     const ts = new Date().toLocaleTimeString()
-    setMessages(prev => [...prev, { role: 'user', content: text, ts }])
-    setInput('')
-
     const ts2 = new Date().toLocaleTimeString()
     setMessages(prev => [...prev, { role: 'user', content: text, ts }, { role: 'assistant', content: '', ts: ts2 }])
+    setInput('')
 
     let finalText = ''
     try {
