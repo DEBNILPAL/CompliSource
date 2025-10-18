@@ -14,6 +14,15 @@ import HelpPage from './pages/HelpPage'
 import UserGuidePage from './pages/UserGuidePage'
 import { ToastProvider } from './components/ToastProvider'
 import InfoPage from './pages/InfoPage'
+import PricingPage from './pages/PricingPage'
+import CareersPage from './pages/CareersPage'
+import BlogListPage from './pages/BlogListPage'
+import BlogArticlePage from './pages/BlogArticlePage'
+import DocsPage from './pages/DocsPage'
+import SupportPage from './pages/SupportPage'
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
+import CookiesPage from './pages/CookiesPage'
 
 function App() {
   return (
@@ -24,6 +33,15 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/developers" element={<DevelopersPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/careers" element={<CareersPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogArticlePage />} />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/cookies" element={<CookiesPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />

@@ -61,7 +61,7 @@ export default function Footer() {
               <li><Link to="/features">Features</Link></li>
               <li><Link to="/developers">For Developers</Link></li>
               <li><Link to="/dashboard" onClick={handleDashboardNav}>Dashboard</Link></li>
-              <li><Link to="/info/pricing">Pricing</Link></li>
+              <li><Link to="/pricing">Pricing</Link></li>
             </ul>
           </div>
 
