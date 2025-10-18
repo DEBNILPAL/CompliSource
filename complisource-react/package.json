@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "complisource-react": "file:.."
+  }
+}

@@ -1,0 +1,8 @@
+date,voucher_id,freelancer_name,pan,gstin,service,amount,tds_deducted,payment_mode,reference,notes
+2025-03-01,VCH-5001,Anuj Mehta,AJUPM4567R,,Design consultation,25000.00,1,NEFT,UTR550001,Professional services
+2025-03-02,VCH-5002,Meera Iyer,MEERI1234K,,Content writing,18000.00,1,UPI,UPI-5002,Article series
+2025-03-02,VCH-5003,TechNova Labs,AABCT1234F,27AABCT1234F1Z6,Data analysis,120000.00,0,CASH,CA-5003,Above cash limit test
+2025-03-03,VCH-5004,Rohit Malhotra,ROHIM2345P,,Video editing,32000.00,1,CHEQUE,CHQ-5004,YouTube edits
+2025-03-03,VCH-5005,Anuj Mehta,AJUPM4567R,,Design consultation,25000.00,1,NEFT,UTR550001-DUP,Duplicate for testing
+2025-03-04,VCH-5006,Shalini Rao,SHLNR6789Q,,UI/UX audit,41500.00,1,UPI,UPI-5006,Mobile app review
+2025-03-05,VCH-5007,Invalid PAN User,INVALIDPAN,,Consulting,15000.00,0,UPI,UPI-5007,Invalid PAN test

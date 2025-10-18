@@ -1,0 +1,8 @@
+txn_id,date,amount,type,party,gstin,notes
+TXN014,2025-08-15,,GST,Missing Amount,,Missing amount should be ignored
+TXN015,2025-08-16,text,Cash,Parse Error,,Amount parse error
+TXN016,2025-08-17,50001,GST,Blank TDS,,Amount > 50k but blank TDS
+TXN017,2025-08-18,250000,Cash,Large Cash,33ABCDE1234F1Z5,Large cash with TDS but should flag cash limit
+TXN018,2025-08-19,49999,Cash,Under Threshold,27ABCDE1234F1Z5,Cash under threshold; TDS optional
+TXN019,2025-08-20,100000,GST,Short GSTIN,123,Invalid GSTIN too short
+TXN020,2025-08-21,150000,GST,Long GSTIN,12345678901234567890,Invalid GSTIN too long

@@ -1,0 +1,6 @@
+txn_id,date,amount,type,party,gstin,notes
+TXN001,2025-08-15,50000,GST,Alpha Traders,27ABCDE1234F1Z5,Invoice #A-101
+TXN002,2025-08-16,250000,Cash,Beta Stores,,Cash purchase
+TXN003,2025-08-20,12000,Expense,Gamma Services,,Office supplies
+TXN004,2025-08-21,75000,GST,Delta Corp,29PQRSX5678L9Z1,Software license
+TXN005,2025-08-22,3000,Expense,, ,Petty cash

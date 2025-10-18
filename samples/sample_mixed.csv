@@ -1,0 +1,9 @@
+txn_id,date,amount,type,party,gstin,notes
+TXN006,2025-08-15,10000,GST,Tech Solutions,27ABCDE1234F1Z5,Software subscription
+TXN007,2025-08-16,75000,GST,Tech Solutions,27ABCDE1234F1Z5,Vendor payment missing TDS
+TXN008,2025-08-17,199999,Cash,Local Vendor,24PQRSX5678L9Z1,Cash purchase just under limit
+TXN009,2025-08-18,200001,Cash,Local Vendor,24PQRSX5678L9Z1,Cash purchase exceeding limit
+TXN010,2025-08-19,45000,GST,Freelancer,07LMNOP1234Q1Z9,Freelance payout under 50k
+TXN011,2025-08-20,51000,GST,Freelancer,07LMNOP1234Q1Z9,Freelance payout over 50k no TDS
+TXN012,2025-08-21,3500,Cash,Invalid GST,INVALIDGSTIN,Invalid GSTIN format
+TXN013,2025-08-22,120000,GST,Supplier,33ABCDE1234F1Z5,Capex bank transfer
