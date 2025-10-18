@@ -8,6 +8,11 @@ const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000'
 
 export default function SignupPage() {
   const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [businessName, setBusinessName] = useState('')
+  const [gstin, setGstin] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -39,7 +44,12 @@ export default function SignupPage() {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password })
+        body: JSON.stringify({ 
+          username, email, password,
+          name, phone, address,
+          business_name: businessName,
+          gstin
+        })
       })
       
       if (!res.ok) {
@@ -92,6 +102,18 @@ export default function SignupPage() {
           <div className="container" style={{ maxWidth: '520px' }}>
             <form id="signupForm" className="card" style={{ padding: '24px' }} onSubmit={handleSubmit}>
               <label>
+                Full Name
+                <input 
+                  type="text" 
+                  id="name"
+                  placeholder="Your full name" 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </label>
+              <div style={{ height: '12px' }}></div>
+              <label>
                 Username
                 <input 
                   type="text" 
@@ -105,6 +127,18 @@ export default function SignupPage() {
               </label>
               <div style={{ height: '12px' }}></div>
               <label>
+                Phone
+                <input 
+                  type="tel" 
+                  id="phone"
+                  placeholder="e.g. +91 90000 00000" 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </label>
+              <div style={{ height: '12px' }}></div>
+              <label>
                 Email
                 <input 
                   type="email" 
@@ -114,6 +148,41 @@ export default function SignupPage() {
                   style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                />
+              </label>
+              <div style={{ height: '12px' }}></div>
+              <label>
+                Address
+                <textarea 
+                  id="address"
+                  placeholder="Business address" 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </label>
+              <div style={{ height: '12px' }}></div>
+              <label>
+                Business Name
+                <input 
+                  type="text" 
+                  id="business_name"
+                  placeholder="Your company or shop name" 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                />
+              </label>
+              <div style={{ height: '12px' }}></div>
+              <label>
+                GSTIN
+                <input 
+                  type="text" 
+                  id="gstin"
+                  placeholder="15-character GSTIN (optional)" 
+                  style={{ width: '100%', padding: '12px', border: '1px solid #d7e0ea', borderRadius: '10px', marginTop: '6px' }}
+                  value={gstin}
+                  onChange={(e) => setGstin(e.target.value)}
                 />
               </label>
               <div style={{ height: '12px' }}></div>

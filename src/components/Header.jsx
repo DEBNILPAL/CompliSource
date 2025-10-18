@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000'
 
 export default function Header({ activePage = '' }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -16,7 +17,7 @@ export default function Header({ activePage = '' }) {
       setIsLoggedIn(true)
       
       // Fetch user info
-      fetch('http://127.0.0.1:8000/me', { 
+      fetch(`${API_BASE}/me`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
       })
         .then(res => {
@@ -25,6 +26,16 @@ export default function Header({ activePage = '' }) {
         })
         .then(data => {
           setUserEmail(data.email)
+          // Proactively refresh token to extend session
+          try {
+            fetch(`${API_BASE}/auth/refresh`, { 
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}` }
+            })
+              .then(r => r.ok ? r.json() : null)
+              .then(j => { if (j && j.token) localStorage.setItem('cs_token', j.token) })
+              .catch(() => {})
+          } catch {}
         })
         .catch(() => {
           setIsLoggedIn(false)
@@ -144,7 +155,7 @@ export default function Header({ activePage = '' }) {
                   </div>
                   <div style={{ padding: '0.5rem' }}>
                     <Link 
-                      to="/dashboard" 
+                      to="/profile" 
                       style={{ 
                         display: 'block', 
                         padding: '0.75rem 1rem', 

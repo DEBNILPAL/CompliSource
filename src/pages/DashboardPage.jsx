@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import BackBar from '../components/BackBar'
 import DashboardDemo from '../components/DashboardDemo'
-import AIComplianceAssistant from '../components/AIComplianceAssistant'
-import VoiceAIAssistant from '../components/VoiceAIAssistant'
+import UnifiedAssistant from '../components/UnifiedAssistant'
 import OCRInvoiceScanner from '../components/OCRInvoiceScanner'
 import { countries, getCountryList, formatCurrency } from '../utils/countryConfig'
 import { blockchains, getBlockchainList, anchorProofToChain, getExplorerLink } from '../utils/blockchainConfig'
@@ -471,7 +469,6 @@ export default function DashboardPage() {
   return (
     <>
       <Header activePage="dashboard" />
-      <BackBar />
 
       <main>
         <section className="section hero-min">
@@ -599,13 +596,9 @@ export default function DashboardPage() {
               )}
             </div>
             
-            {violations.length > 0 && (
-              <div style={{ marginTop: '24px' }}>
-                <AIComplianceAssistant violations={violations} />
-              </div>
-            )}
-            
-            <VoiceAIAssistant violations={violations} />
+            <div style={{ marginTop: '24px' }}>
+              <UnifiedAssistant violations={violations} score={analysisData?.score} />
+            </div>
           </div>
         </section>
       </main>
